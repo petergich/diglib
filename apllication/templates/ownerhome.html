@@ -4,6 +4,14 @@
 {% block content %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.js"></script>
 <script>
+    var message="{{message|safe}}"
+    if (message){
+        alert(message)
+    }
+    function deletedoc(id){
+        var url="{% url "ownerhome"%}?deleteid="+id
+        window.location.href=url
+    }
     function opendoc(docurl){
         const url = docurl; // URL of the PDF document
         const pdfViewer = document.getElementById('docview');
@@ -80,7 +88,7 @@
                                                     <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
                                                 </div>
                                                 <div class="pro-cart" onclick="opendoc('{{ archive.file.url }}')">
-                                                    <a title="Add To Cart" href="#">open</a>
+                                                    <a title="open" href="#">open</a>
                                                 </div>
                                                 <div class="pro-same-action pro-quickview">
                                                     <a title="Quick View" href="#" data-toggle="modal" data-target="#{{ archive.id }}exampleModal"><i class="pe-7s-look"></i></a>
@@ -93,6 +101,7 @@
                                                 <span>{{ archive.description }}</span>
                                                 <span class="">{{ archive.type }}</span>
                                             </div>
+                                            <button class="btn btn-primary" onclick="deletedoc({{archive.id}})">Delete</button>
                                             <div class="product-rating">
                                                 <i class="fa fa-star-o yellow"></i>
                                                 <i class="fa fa-star-o yellow"></i>

@@ -70,6 +70,15 @@ def ownerhome(request):
         profile_obj = Profile.objects.get(owner=request.user, account="Author")
     except:
         return redirect("ownerlogin")
+    if "deleteid" in request.GET:
+        obj=Archive.objects.get(id=request.GET.get("deleteid"))
+        try:
+            obj.delete()
+            archive_obj = Archive.objects.filter(owner__username=request.user.username)
+            return render(request,'ownerhome.html',{'archives':archive_obj,"message":"Deleted successly"})
+        except:
+            archive_obj = Archive.objects.filter(owner__username=request.user.username)
+            return render(request,'ownerhome.html',{'archives':archive_obj,"message":"delete failed!"})   
     archive_obj = Archive.objects.filter(owner__username=request.user.username)
     return render(request,'ownerhome.html',{'archives':archive_obj})
 def ownerregister(request):
