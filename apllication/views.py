@@ -13,7 +13,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from .forms import RegisterForm,UserLoginForm,ProfileForm,ArchiveForm,UserEditForm
 # from .serializers import productSerializer
-from django.contrib.auth.mixins import LoginRequiredMixin
+#from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from .models import *
 from django.core.mail import EmailMessage, BadHeaderError,send_mail
@@ -257,7 +257,7 @@ def collectionhome(request):
         archive_obj = Archive.objects.all()
         return render(request,'root/archives.html',{'archives':archive_obj})
     
-class ProfileSet(LoginRequiredMixin, View):
+class ProfileSet( View):
     def get(self, request):
         form1 = ProfileForm()
         form2 = UserEditForm()
@@ -307,7 +307,7 @@ class ProfileSet(LoginRequiredMixin, View):
             
         return render(request, 'root/profile.html', {'form1': form1, 'form2': form2})
     
-class ProfileView(LoginRequiredMixin,View):
+class ProfileView(View):
     def get(self,request):
         user_ip_address = request.META.get('REMOTE_ADDR')
         try:
