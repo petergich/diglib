@@ -30,9 +30,13 @@
 
                         <label for="image">Preview image</label>
                         <input type="file" id="image" name="image" accept="image/*"required>
+                        <div style="justify-content:space-between;">
                         <button class="btn btn-success" type="submit">Upload</button>
+                        </div>
                     </form>
-                   
+                    <div style="margin-top:2vh">
+                    <a href="{% url "ownerhome"%}"><button class="btn btn-primary">home</button></a>
+                    </div>
                 </div>
             </div>
         </div>
