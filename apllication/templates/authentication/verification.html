@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+    <div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <ul>
+                    <li>
+                        <a href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="active">Activation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="error-area pt-40 pb-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8 text-center">
+                    <div class="error">
+                        <h1>200 ACTIVATE</h1>
+                        <h2>Email activation sent! PLEASE ACTIVATE YOUR ACCOUNT AND LOGIN</h2>
+                        <form action="#" class="searchform mb-50">
+                            <input type="text" name="search" id="error_search" placeholder="Search..." class="searchform__input">
+                            <button type="submit" class="searchform__submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                        <a href="{% url 'home' %}" class="error-btn">Back to home page</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

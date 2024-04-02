@@ -1,0 +1,75 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="checkout-area pb-80 pt-100" style="max-height: 800px; overflow-y: auto;">
+    <div class="container">
+        <div class="row">
+            <div class="ml-auto mr-auto col-lg-9">
+                <div class="checkout-wrapper">
+                    <div id="faq" class="panel-group">
+                        <div class="panel panel-default single-my-account">
+                            <div class="panel-heading my-account-title">
+                                <h3 class="panel-title"><span>1 .</span> <a data-toggle="collapse" data-parent="#faq" href="#my-account-1">Edit your Personal information </a></h3>
+                            </div>
+                            <div id="my-account-1" class="panel-collapse collapse show">
+                                <div class="panel-body">
+                                    <div class="myaccount-info-wrapper">
+                                        <form class="form-container" action="{% url 'edit_profile' %}" method="post">
+                                        <div class="account-info-wrapper">
+                                            <h4>My Personal Information</h4>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            {% csrf_token %}
+                                            {{ form2.as_p }}  
+                                                                                     
+                                        </div>
+                                        <div class="billing-back-btn">
+                                            <div class="billing-back">
+                                                <a href="#"><i class="fa fa-arrow-up"></i> back</a>
+                                            </div>
+                                            <div class="billing-btn">
+                                                <button type="submit" name="form2-submit">Continue</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default single-my-account">
+                            <div class="panel-heading my-account-title">
+                                <h3 class="panel-title"><span>2 .</span> <a data-toggle="collapse" data-parent="#faq" href="#my-account-2">Change your Profile  Information</a></h3>
+                            </div>
+                            <div id="my-account-2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="myaccount-info-wrapper">
+                                        <form class="form-container" action="{% url 'edit_profile' %}" method="post">
+                                        <div class="account-info-wrapper">
+                                            <h4>Change Profile  Details</h4>
+                                            <h5>Your Profile  Details</h5>
+                                        </div>
+                                        <div class="row">
+                                            {% csrf_token %}
+                                            {{ form1.as_p }}
+                                        </div>
+                                        <div class="billing-back-btn">
+                                            <div class="billing-back">
+                                                <a href="#"><i class="fa fa-arrow-up"></i> back</a>
+                                            </div>
+                                            <div class="billing-btn">
+                                                <button type="submit" name="form1-submit">Continue</button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

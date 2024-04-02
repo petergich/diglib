@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<section class="card" style="max-height: 600px; overflow-y: auto;">
+    <div class="card-content">
+        <div class="card-body" >
+            <div class="row">
+                <div class="col-3">
+                    <!-- Render profile image -->
+                    <div class="imgs">
+                    <div class="container-image">
+                        <img src={{profile.profile_image.url}} alt="profile" class="profile" />
+                      </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <p>Last Login: {{ user.last_login }}</p>
+                    <p>IP: {{ user_ip_address }}</p>
+                    <hr/>
+                    <!-- User profile form -->
+                    <form class="form-user-profile" action="index.html">
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{% if user.first_name is not None %}{{ user.first_name }}{% else %}null{% endif %}" placeholder="First Name is empty" disabled>
+
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{% if user.last_name is not None %}{{ user.last_name }}{% else %}null{% endif %}" placeholder="Last Name is empty" disabled>
+
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" value="{{ user.username }}" placeholder="Username" disabled>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="{{ user.email }}" placeholder="Email" disabled>
+
+                        <label for="account">Account type:</label>
+                        <input type="text" id="account" name="account" value="{{ profile.account }}" placeholder="account" disabled>
+
+                    </form>
+                    <div>
+                        <p>Two-factor Authorization</p>
+                        <input type="checkbox" name="two_factor_auth" disabled>
+                    </div>
+                    <div>
+                        <p>Login Notification</p>
+                        <input type="checkbox" name="login_notification" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
