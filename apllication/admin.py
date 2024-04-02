@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import *
-from report_builder.models import Report
+#from report_builder.models import Report
 
 class ReportAdmin(admin.ModelAdmin):
     list_display = ('name', 'modified')
