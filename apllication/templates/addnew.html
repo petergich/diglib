@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<script>
+    var message="{{message|safe}}"
+    if(message){
+        alert(message)
+    }
+</script>
+<section class="card" style="max-height: 600px; overflow-y: auto;">
+    <div class="card-content">
+        <div class="card-body" >
+            <div class="row">
+                <div class="col-9">
+                    <hr/>
+                    <!-- User profile form -->
+                    <form class="form-user-profile" action="{% url "addnew"%}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+
+                        <label for="description">Description:</label>
+                        <textarea type="text" id="description" name="description" required></textarea>
+
+                        <label for="genre">Genre:</label>
+                        <input type="text" id="genre" name="genre" required>
+
+                        <label for="file">File:</label>
+                        <input type="file" id="file" name="file" accept=".pdf"required>
+
+                        <label for="image">Preview image</label>
+                        <input type="file" id="image" name="image" accept="image/*"required>
+                        <button class="btn btn-success" type="submit">Upload</button>
+                    </form>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

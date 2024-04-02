@@ -1,6 +1,11 @@
 from django.conf import settings
 from django.shortcuts import redirect
+from django.utils.deprecation import MiddlewareMixin
 
+class CustomXFrameOptionsMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        response['X-Frame-Options'] = 'ALLOWALL'
+        return response
 class PreventLoginAfterAuthMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response

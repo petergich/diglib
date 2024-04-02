@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os 
+from django.middleware.clickjacking import XFrameOptionsMiddleware
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apllication.middleware.PreventLoginAfterAuthMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'diglib.urls'
@@ -74,7 +76,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'diglib.wsgi.application'
 
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

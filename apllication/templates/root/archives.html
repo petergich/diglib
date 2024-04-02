@@ -1,7 +1,40 @@
 {% extends 'index.html' %}
-{% load static %}
+{% load static%}
+
 {% block content %}
-<div class="shop-area pt-95 pb-100" style="max-height: 700px;overflow-y: auto;">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.js"></script>
+<script>
+    function opendoc(docurl){
+        const url = docurl; // URL of the PDF document
+        const pdfViewer = document.getElementById('docview');
+        pdfViewer.style.display = "block";
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+                pdf.getPage(pageNumber).then(page => {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    const viewport = page.getViewport({ scale: 1.7 });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    page.render({ canvasContext: context, viewport });
+                    pdfViewer.appendChild(canvas); // Append canvas to the viewer container
+                });
+            }
+        });
+    }
+
+    function closedoc(){
+        const pdfViewer = document.getElementById('docview');
+        pdfViewer.innerHTML = ''; // Clear the content of the viewer
+        pdfViewer.style.display = "none"; // Hide the viewer container
+    }
+</script>
+<div id="docview" style="display:none;overflow-y: auto; margin-left: 10;margin-top:5vh; margin-right: auto; height: 80vh; width: 100%; z-index: 9999; position: absolute; background-color: white;">
+    <div class="modal-header">
+        <button type="button" style="z-index:9999;"class="close" onclick="closedoc()" aria-label="Close"><span aria-hidden="true">x</span></button>
+    </div>
+</div>
+<div class="shop-area pt-95 pb-100" style="max-height: 700px; overflow-y: auto;">
     <div class="container">
         <div class="row flex-row-reverse">
             <div class="col-lg-9">
@@ -27,7 +60,7 @@
                     </div>
                 </div>
                 <div class="shop-bottom-area mt-35">
-                    <div class="tab-content jump " >
+                    <div class="tab-content jump">
                         <div id="shop-1" class="tab-pane active">
                             <div class="row row1">
                                 {% for archive in archives %}
@@ -35,25 +68,23 @@
                                     <div class="product-wrap mb-25 scroll-zoom">
                                         <div class="product-img">
                                             <a href="#" data-toggle="modal" data-target="#{{ archive.id }}e">
-                                                <img class="default-img" src="{{ archive.preview_image.url  }}" alt="">
-                                                <img class="hover-img" src="{{ archive.preview_image.url  }}" alt="">
+                                                <img class="default-img" src="{{ archive.preview_image.url }}" alt="">
+                                                <img class="hover-img" src="{{ archive.preview_image.url }}" alt="">
                                             </a>
-                                            {% comment %} <span class="pink">-10%</span> {% endcomment %}
                                             <div class="product-action">
                                                 <div class="pro-same-action pro-wishlist">
                                                     <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
                                                 </div>
-                                                <div class="pro-same-action pro-cart">
-                                                    <a title="Add To Cart" href="#">open {{ archive.file.url }}</a>
+                                                <div class="pro-cart" onclick="opendoc('{{ archive.file.url }}')">
+                                                    <a title="Add To Cart" href="#">open</a>
                                                 </div>
                                                 <div class="pro-same-action pro-quickview">
-                                                    <a title="Quick View" href="#" data-toggle="modal" data-target="#{{ archive.id}}exampleModal"><i class="pe-7s-look"></i></a>
+                                                    <a title="Quick View" href="#" data-toggle="modal" data-target="#{{ archive.id }}exampleModal"><i class="pe-7s-look"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="product-content text-center">
                                             <h3><a href="#">{{ archive.name }}</a></h3>
-                                           
                                             <div class="product-price">
                                                 <span>{{ archive.description }}</span>
                                                 <span class="">{{ archive.type }}</span>
@@ -79,17 +110,17 @@
                                         <div class="product-wrap">
                                             <div class="product-img">
                                                 <a href="#">
-                                                    <img class="default-img" src="{{archive.preview_image.url  }}" alt="">
-                                                    <img class="hover-img" src="{{ archive.preview_image.url  }}" alt="">
+                                                    <img class="default-img" src="{{ archive.preview_image.url }}" alt="">
+                                                    <img class="hover-img" src="{{ archive.preview_image.url }}" alt="">
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-8 col-lg-7 col-md-7 col-sm-6 ">
+                                    <div class="col-xl-8 col-lg-7 col-md-7 col-sm-6">
                                         <div class="shop-list-content">
                                             <h3><a href="#">{{ archive.name }}</a></h3>
                                             <div class="product-list-price">
-                                                <span>Ksh {{archive.description }}</span>
+                                                <span>Ksh {{ archive.description }}</span>
                                             </div>
                                             <div class="rating-review">
                                                 <div class="product-list-rating">
@@ -99,7 +130,6 @@
                                                     <i class="fa fa-star-o"></i>
                                                     <i class="fa fa-star-o"></i>
                                                 </div>
-                                                {% comment %} <a href="#">3 Reviews</a> {% endcomment %}
                                             </div>
                                             <div class="shop-list-btn btn-hover">
                                                 
@@ -124,18 +154,18 @@
             <div class="col-lg-3">
                 <div class="sidebar-style mr-30">
                     <div class="sidebar-widget">
-                        <h4 class="pro-sidebar-title">Search </h4>
+                        <h4 class="pro-sidebar-title">Search</h4>
                         <div class="pro-sidebar-search mb-50 mt-25">
                             <form class="pro-sidebar-search-form" action="#">
                                 <input class="search" type="text" placeholder="Search here...">
-                                <button type = 'submit' >
+                                <button type="submit">
                                     <i class="pe-7s-search"></i>
                                 </button>
                             </form>
                         </div>
                     </div>
                     <div class="sidebar-widget">
-                        <h4 class="pro-sidebar-title">Refine By </h4>
+                        <h4 class="pro-sidebar-title">Refine By</h4>
                         <div class="sidebar-widget-list mt-30">
                             <ul>
                                 <li>
@@ -159,18 +189,8 @@
                             </ul>
                         </div>
                     </div>
-                    {% comment %} <div class="sidebar-widget mt-45">
-                        <h4 class="pro-sidebar-title">Filter By Price </h4>
-                        <div class="price-filter mt-10">
-                            <div class="price-slider-amount">
-                                <input type="text" id="amount" name="price"  placeholder="Add Your Price" />
-                            </div>
-                            <div id="slider-range"></div>
-                        </div>
-                    </div> {% endcomment %}
-                   
                     <div class="sidebar-widget mt-50">
-                        <h4 class="pro-sidebar-title">Tag </h4>
+                        <h4 class="pro-sidebar-title">Tag</h4>
                         <div class="sidebar-widget-tag mt-25">
                             <ul>
                                 {% if archives %}
@@ -185,7 +205,6 @@
                                     {% endfor %}
                                 {% endwith %}
                             {% endif %}
-
                             </ul>
                         </div>
                     </div>
@@ -194,7 +213,7 @@
         </div>
     </div>
 </div>
-{% for archive in  archives %}
+{% for archive in archives %}
 <div class="modal fade" id="{{ archive.id }}e" tabindex="{{ forloop.counter }}" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -206,7 +225,7 @@
                     <div class="col-md-5 col-sm-12 col-xs-12">
                         <div class="tab-content quickview-big-img">
                             <div id="pro-1" class="tab-pane fade show active">
-                                <img src="{{archive.preview_image.url}}" alt="">
+                                <img src="{{ archive.preview_image.url }}" alt="">
                             </div>
                             <div id="pro-2" class="tab-pane fade">
                                 <img src="{% static 'img/product/quickview-l2.jpg' %}" alt="">
@@ -218,8 +237,6 @@
                                 <img src="{% static 'img/product/quickview-l2.jpg' %}" alt="">
                             </div>
                         </div>
-                        <!-- Thumbnail Large Image End -->
-                        <!-- Thumbnail Image End -->
                         <div class="quickview-wrap mt-15">
                             <div class="quickview-slide-active owl-carousel nav nav-style-1" role="tablist">
                                 <a class="active" data-toggle="tab" href="#pro-1"><img src="{% static 'img/product/quickview-s1.jpg' %}" alt=""></a>
@@ -233,7 +250,7 @@
                         <div class="product-details-content quickview-content">
                             <h2>{{ archive.name }}</h2>
                             <div class="product-details-price">
-                                <span>{{ archive.type  }}</span>
+                                <span>{{ archive.type }}</span>
                             </div>
                             <div class="pro-details-rating-wrap">
                                 <div class="pro-details-rating">
@@ -245,7 +262,7 @@
                                 </div>
                                 <span>3 Reviews</span>
                             </div>
-                            <p>{{  archive.description }}</p>
+                            <p>{{ archive.description }}</p>
                             <div class="pro-details-list">
                                 <ul>
                                     <li>- 0.5 mm Dail</li>
@@ -257,8 +274,8 @@
                                 <div class="cart-plus-minus">
                                     <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
                                 </div>
-                                <div class="pro-details-cart btn-hover">
-                                    <a href="#">order now</a>
+                                <div class="pro-details-cart btn-hover"onclick="opendoc('{{ archive.file.url }}')">
+                                    <a href="#">open</a>
                                 </div>
                                 <div class="pro-details-wishlist">
                                     <a href="#"><i class="fa fa-heart-o"></i></a>
@@ -272,6 +289,7 @@
                                 <ul>
                                     <li><a href="#">{{ archive.type }}</a></li>
                                 </ul>
+                            </div>
                             <div class="pro-details-social">
                                 <ul>
                                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -291,3 +309,7 @@
 {% endfor %}
 
 {% endblock %}
+<!-- Add your JavaScript scripts and libraries here -->
+<script src="your-scripts.js"></script>
+</body>
+</html>

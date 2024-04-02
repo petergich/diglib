@@ -23,8 +23,47 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import token_generator
 from threading import Thread
+from django.core.files.storage import FileSystemStorage
 
 
+@login_required(login_url="ownerlogin")
+def addnew(request):
+    try:
+        profile_obj = Profile.objects.get(owner=request.user, account="Author")
+    except:
+        return redirect("ownerlogin")
+    if request.method=="POST":
+        name=request.POST.get('name')
+        description=request.POST.get('description')
+        genre=request.POST.get('genre')
+        file=request.FILES.get('file')
+        image=request.FILES.get('image')
+        try:
+            owner=Archive_owner.objects.get(username=request.user.username)
+        except:
+           return redirect("ownerhome") 
+        if file and image:
+            # Save the file and image to the media directory
+            fs = FileSystemStorage()
+            file_name = fs.save(file.name, file)
+            image_name = fs.save(image.name, image)
+            
+            # Create Archive object with file and image paths
+            Archive.objects.create(
+                name=name,
+                owner=owner,
+                description=description,
+                type="PDF",
+                genre=genre,
+                file=file_name,  # Save the file path
+                preview_image=image_name  # Save the image path
+            )
+            
+            return render(request,"addnew.html",{"message":"File uploaded successfully!"})
+        else:
+            return render(request,"addnew.html",{"message":"File upload failed!"})
+        
+    return render(request,"addnew.html")
 @login_required(login_url="ownerlogin")
 def ownerhome(request):
     try:
@@ -32,7 +71,7 @@ def ownerhome(request):
     except:
         return redirect("ownerlogin")
     archive_obj = Archive.objects.filter(owner__username=request.user.username)
-    return render(request,'root/archives.html',{'archives':archive_obj})
+    return render(request,'ownerhome.html',{'archives':archive_obj})
 def ownerregister(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)

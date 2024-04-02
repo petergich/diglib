@@ -16,4 +16,6 @@ urlpatterns = [
     path('edit_profile',csrf_exempt(ProfileSet.as_view()),name='edit_profile'),
     path("ownerregister",views.ownerregister,name="ownerregister"),
     path("ownerlogin",views.ownerlogin,name="ownerlogin"),
+    path("addnew",views.addnew,name="addnew"),
+    
     ]
